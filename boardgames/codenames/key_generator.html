@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111923"><title>Codenames Keycard Generator</title>
+<style>
+:root{color-scheme:dark;--bg:#101720;--panel:#19232e;--border:#34404d;--text:#edf0f1;--muted:#9caab5;--red:#cf6560;--blue:#608fc2;--neutral:#d3c3a4;--assassin:#303640;--gold:#e5c48a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:1040px;margin:0 auto;padding:clamp(14px,3vw,36px)}.layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--border);border-radius:17px}.settings{padding:23px}.section{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:750;margin:0 0 13px}.section:not(:first-child){margin-top:27px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:7px}.field label{font-size:12px;color:#cbd4da;font-weight:650}.field select,.field input{width:100%;height:43px;padding:0 11px;background:#111a24;border:1px solid #465360;border-radius:9px;color:var(--text);font:600 15px system-ui;outline:none}.field input:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 2px #e5c48a22}.stepper{display:grid;grid-template-columns:37px minmax(0,1fr) 37px;align-items:center;height:43px;border:1px solid #465360;border-radius:9px;overflow:hidden;background:#111a24}.stepper button{height:100%;border:0;background:#263442;color:#f1f4f5;font:600 22px system-ui;cursor:pointer}.stepper button:hover:not(:disabled){background:#394a5a}.stepper button:disabled{opacity:.25;cursor:not-allowed}.stepper button:focus-visible{outline:2px solid var(--gold);outline-offset:-3px}.stepper output{text-align:center;font-weight:700;font-variant-numeric:tabular-nums}.dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:baseline}.red{background:var(--red)}.blue{background:var(--blue)}.neutral{background:var(--neutral)}.assassin{background:var(--assassin)}.line{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px;color:var(--muted);margin-top:18px}.line strong{color:var(--text);font-variant-numeric:tabular-nums}.error{color:#ffb6b1;font-size:12px;min-height:18px;margin:12px 0 0}.btn{border:1px solid transparent;border-radius:10px;padding:12px 14px;font:700 13px system-ui;cursor:pointer;transition:background .15s,transform .15s}.btn:active{transform:translateY(1px)}.btn:focus-visible,.tile:focus-visible{outline:3px solid var(--gold);outline-offset:3px}.btn:disabled{opacity:.38;cursor:not-allowed}.primary{background:var(--gold);color:#18202a}.secondary{background:#293644;border-color:#43505d;color:var(--text)}.actions{display:grid;gap:9px;margin-top:12px}.board-panel{padding:clamp(15px,3vw,27px)}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:19px}.status{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.start-dot{width:12px;height:12px;border-radius:50%}.start-label{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.size{font-size:12px;color:var(--muted);border:1px solid var(--border);border-radius:30px;padding:5px 10px}.mini{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font:650 12px system-ui;cursor:pointer}.mini:hover{color:var(--text);border-color:#74818e}.board{display:grid;gap:clamp(5px,1vw,11px);width:100%;margin:auto}.tile{position:relative;aspect-ratio:1;border:1px solid #ffffff25;border-radius:clamp(5px,1vw,10px);box-shadow:inset 0 1px 0 #ffffff1c;cursor:pointer;display:grid;place-items:center;padding:0;touch-action:manipulation}.tile:hover{filter:brightness(1.1)}.tile.marked::before,.tile.marked::after{content:"";position:absolute;width:68%;height:clamp(4px,.8vw,8px);background:#fff;border-radius:100px;top:50%;left:50%;transform:translate(-50%,-50%) rotate(45deg);pointer-events:none}.tile.marked::after{transform:translate(-50%,-50%) rotate(-45deg)}.legend{display:flex;justify-content:center;gap:11px 17px;flex-wrap:wrap;margin-top:22px;font-size:12px;color:var(--muted)}.legend b{color:var(--text);font-variant-numeric:tabular-nums}.legend .dot{margin-right:5px}.hint{margin:15px 0 0;text-align:center;color:#82929f;font-size:12px}.muted{color:var(--muted)}@media(max-width:730px){.layout{grid-template-columns:1fr}.board-panel{order:0}.settings{order:1}.app{padding:12px}.settings{padding:20px}.board-panel{padding:16px}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* Color palette thumbnails: visual choice without visible text labels. */
+.palette-options{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.palette-option{position:relative;display:flex;align-items:center;justify-content:center;min-height:64px;padding:9px;border:1px solid #465360;border-radius:10px;background:#111a24;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s}
+.palette-option:hover{border-color:#82909e;background:#172330}
+.palette-option[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),inset 0 0 0 1px #e5c48a18}
+.palette-option:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.palette-preview{display:grid;grid-template-columns:repeat(4,17px);grid-template-rows:repeat(2,17px);gap:4px}
+.palette-preview i{display:block;border-radius:3px;border:1px solid #ffffff21}
+@media(max-width:350px){.palette-preview{grid-template-columns:repeat(4,14px);grid-template-rows:repeat(2,14px);gap:3px}}
+</style>
+</head>
+<body><main class="app"><div class="layout">
+<section class="panel settings" aria-label="Settings">
+<h2 class="section">Grid</h2><div class="two"><div class="field"><label for="cols">Columns</label><select id="cols"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option></select></div><div class="field"><label for="rows">Rows</label><select id="rows"><option>3</option><option>4</option><option selected>5</option><option>6</option><option>7</option><option>8</option></select></div></div>
+<h2 class="section" id="paletteHeading">Palette</h2>
+<div class="palette-options" role="group" aria-labelledby="paletteHeading">
+  <button type="button" id="paletteClassic" class="palette-option" data-palette="classic" aria-pressed="true" aria-label="Red and blue palette" title="Red / Blue">
+    <span class="palette-preview" aria-hidden="true"><i style="background:#cf6560"></i><i style="background:#608fc2"></i><i style="background:#cf6560"></i><i style="background:#d3c3a4"></i><i style="background:#608fc2"></i><i style="background:#cf6560"></i><i style="background:#303640"></i><i style="background:#608fc2"></i></span>
+  </button>
+  <button type="button" id="palettePictures" class="palette-option" data-palette="pictures" aria-pressed="false" aria-label="Orange and purple palette" title="Orange / Purple">
+    <span class="palette-preview" aria-hidden="true"><i style="background:#e79b50"></i><i style="background:#9473ba"></i><i style="background:#e79b50"></i><i style="background:#d3c3a4"></i><i style="background:#9473ba"></i><i style="background:#e79b50"></i><i style="background:#303640"></i><i style="background:#9473ba"></i></span>
+  </button>
+</div>
+<h2 class="section">Agents</h2><div class="two"><div class="field"><label for="redCount"><span class="dot red"></span><span id="redLabel">Red</span></label><div class="stepper"><button type="button" id="redMinus" aria-label="Decrease red agents">−</button><output id="redCount">8</output><button type="button" id="redPlus" aria-label="Increase red agents">+</button></div></div><div class="field"><label for="blueCount"><span class="dot blue"></span><span id="blueLabel">Blue</span></label><div class="stepper"><button type="button" id="blueMinus" aria-label="Decrease blue agents">−</button><output id="blueCount">7</output><button type="button" id="bluePlus" aria-label="Increase blue agents">+</button></div></div></div>
+<div class="line"><span>Neutral</span><strong id="neutralCount">9</strong></div><div class="line"><span>Assassin</span><strong>1</strong></div><p class="error" id="error" role="alert" aria-live="polite"></p>
+<div class="actions"><button class="btn primary" id="generate">Generate keycard</button><button class="btn secondary" id="download">Export PNG</button></div>
+</section>
+<section class="panel board-panel" aria-label="Interactive keycard"><div class="toolbar"><div class="status"><span id="startDot" class="start-dot red"></span><span id="startLabel" class="start-label">RED STARTS</span><span id="size" class="size">5 × 5</span></div><button class="mini" id="clear" title="Remove all X marks">Clear marks</button></div>
+<div class="board" id="board" role="group" aria-label="Keycard: tap a square to mark or unmark it"></div><div class="legend"><span><i class="dot red"></i><span id="legendRedLabel">Red</span> <b id="rTotal">8</b></span><span><i class="dot blue"></i><span id="legendBlueLabel">Blue</span> <b id="bTotal">7</b></span><span><i class="dot neutral"></i>Neutral <b id="nTotal">9</b></span><span><i class="dot assassin" style="border:1px solid #64717c"></i>Assassin <b>1</b></span></div><p class="hint" id="progress">Tap a tile to mark it as revealed.</p></section>
+</div></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+// Internal red/blue IDs are stable team identifiers; only their presentation changes.
+const PALETTES={
+  classic:{red:'#cf6560',blue:'#608fc2',names:{red:'Red',blue:'Blue'},filename:'Red-Blue'},
+  pictures:{red:'#e79b50',blue:'#9473ba',names:{red:'Orange',blue:'Purple'},filename:'Orange-Purple'}
+};
+const COLORS={red:PALETTES.classic.red,blue:PALETTES.classic.blue,neutral:'#d3c3a4',assassin:'#303640'};
+let palette='classic',key=null;
+const displayName=type=>PALETTES[palette].names[type]||({neutral:'Neutral',assassin:'Assassin'}[type]||type);
+function setPalette(next){
+  if(!PALETTES[next])return;
+  palette=next;
+  const p=PALETTES[next];
+  COLORS.red=p.red;COLORS.blue=p.blue;
+  document.documentElement.style.setProperty('--red',p.red);
+  document.documentElement.style.setProperty('--blue',p.blue);
+  $('redLabel').textContent=p.names.red;
+  $('blueLabel').textContent=p.names.blue;
+  $('legendRedLabel').textContent=p.names.red;
+  $('legendBlueLabel').textContent=p.names.blue;
+  for(const team of ['red','blue']){
+    const name=p.names[team].toLowerCase();
+    $(team+'Minus').setAttribute('aria-label','Decrease '+name+' agents');
+    $(team+'Plus').setAttribute('aria-label','Increase '+name+' agents');
+  }
+  for(const [name,id] of [['classic','paletteClassic'],['pictures','palettePictures']])
+    $(id).setAttribute('aria-pressed',String(name===next));
+  // Recolor the current keycard; do not reshuffle tiles or erase X marks.
+  if(key)render();
+}
+function randomInt(n){if(globalThis.crypto?.getRandomValues){const b=new Uint32Array(1),limit=Math.floor(4294967296/n)*n;let v;do{crypto.getRandomValues(b);v=b[0]}while(v>=limit);return v%n}return Math.floor(Math.random()*n)}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=randomInt(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+let counts={red:8,blue:7};
+function read(){const cols=Number($('cols').value),rows=Number($('rows').value),red=counts.red,blue=counts.blue;return{cols,rows,red,blue,neutral:cols*rows-red-blue-1,valid:red>=0&&blue>=0&&red+blue+1<=cols*rows}}
+function validate(){const c=read();$('redCount').textContent=c.red;$('blueCount').textContent=c.blue;$('neutralCount').textContent=c.neutral;$('error').textContent=c.valid?'':'Agent counts exceed available tiles.';$('generate').disabled=!c.valid;for(const color of ['red','blue']){$(color+'Minus').disabled=counts[color]===0;$(color+'Plus').disabled=!c.valid||c.neutral===0}return c}
+function adjust(color,delta){const c=read();if(delta>0&&c.neutral<delta)return;counts[color]=Math.max(0,counts[color]+delta);validate()}
+function resizeGrid(){const capacity=Number($('cols').value)*Number($('rows').value)-1,total=counts.red+counts.blue;if(total>capacity){const scaledRed=counts.red*capacity/total,scaledBlue=counts.blue*capacity/total;counts.red=Math.floor(scaledRed);counts.blue=Math.floor(scaledBlue);let remaining=capacity-counts.red-counts.blue;if(remaining){if(scaledRed-counts.red>=scaledBlue-counts.blue)counts.red++;else counts.blue++}}validate()}
+function generate(){const c=validate();if(!c.valid)return;const cells=shuffle([...Array(c.red).fill('red'),...Array(c.blue).fill('blue'),...Array(c.neutral).fill('neutral'),'assassin']);key={...c,cells,marks:new Set()};render()}
+function toggle(i){if(!key)return;key.marks.has(i)?key.marks.delete(i):key.marks.add(i);render()}
+function render(){if(!key)return;const k=key,board=$('board');board.replaceChildren();board.style.gridTemplateColumns=`repeat(${k.cols},minmax(0,1fr))`;board.style.maxWidth=`${Math.min(100,k.cols/k.rows*100)}%`;k.cells.forEach((type,i)=>{const b=document.createElement('button');b.type='button';b.className='tile '+type+(k.marks.has(i)?' marked':'');b.setAttribute('aria-label',`Row ${Math.floor(i/k.cols)+1}, column ${i%k.cols+1}: ${displayName(type)}${k.marks.has(i)?', revealed':''}`);b.setAttribute('aria-pressed',String(k.marks.has(i)));b.addEventListener('click',()=>toggle(i));board.appendChild(b)});const starter=k.red>k.blue?'red':k.blue>k.red?'blue':null;$('startDot').style.display=starter?'':'none';$('startDot').className='start-dot '+(starter||'');$('startLabel').textContent=starter?displayName(starter).toUpperCase()+' STARTS':'EVEN TEAMS';$('startLabel').style.color=starter?COLORS[starter]:'var(--muted)';$('size').textContent=`${k.cols} × ${k.rows}`;$('rTotal').textContent=k.red;$('bTotal').textContent=k.blue;$('nTotal').textContent=k.neutral;$('progress').textContent=k.marks.size?`${k.marks.size} / ${k.cells.length} revealed · Tap again to undo`:'Tap a tile to mark it as revealed.'}
+function rounded(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
+function exportPNG(){if(!key)return;const k=key,s=164,g=12,p=55,top=110,bottom=100,W=p*2+k.cols*s+(k.cols-1)*g,H=top+k.rows*s+(k.rows-1)*g+bottom;const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const c=canvas.getContext('2d');c.fillStyle='#141d27';c.fillRect(0,0,W,H);const starter=k.red>k.blue?'red':k.blue>k.red?'blue':null;c.textAlign='left';c.font='700 29px system-ui,sans-serif';c.fillStyle=starter?COLORS[starter]:'#d4dbe1';c.fillText(starter?`${displayName(starter).toUpperCase()} STARTS`:'EVEN TEAMS',p,61);c.textAlign='right';c.font='600 22px system-ui,sans-serif';c.fillStyle='#9caab5';c.fillText(`${k.cols} × ${k.rows}`,W-p,59);k.cells.forEach((type,i)=>{const x=p+(i%k.cols)*(s+g),y=top+Math.floor(i/k.cols)*(s+g);rounded(c,x,y,s,s,12);c.fillStyle=COLORS[type];c.fill();if(k.marks.has(i)){c.strokeStyle='#fff';c.lineWidth=11;c.lineCap='round';c.beginPath();const inset=s*.22;c.moveTo(x+inset,y+inset);c.lineTo(x+s-inset,y+s-inset);c.moveTo(x+s-inset,y+inset);c.lineTo(x+inset,y+s-inset);c.stroke()}});c.textAlign='center';c.fillStyle='#aab6c0';c.font='600 20px system-ui,sans-serif';c.fillText(`${displayName("red").toUpperCase()} ${k.red}   ·   ${displayName("blue").toUpperCase()} ${k.blue}   ·   NEUTRAL ${k.neutral}   ·   ASSASSIN 1`,W/2,H-48);const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download=`Codenames_Keycard_${k.cols}x${k.rows}_${PALETTES[palette].filename}.png`;a.click()}
+['cols','rows'].forEach(id=>$(id).addEventListener('change',resizeGrid));for(const color of ['red','blue']){ $(color+'Minus').addEventListener('click',()=>adjust(color,-1));$(color+'Plus').addEventListener('click',()=>adjust(color,1))}$('generate').addEventListener('click',generate);$('clear').addEventListener('click',()=>{if(key){key.marks.clear();render()}});$('download').addEventListener('click',exportPNG);$('paletteClassic').addEventListener('click',()=>setPalette('classic'));$('palettePictures').addEventListener('click',()=>setPalette('pictures'));setPalette('classic');generate();
+</script></body></html>
